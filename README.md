@@ -1,60 +1,79 @@
-# Team Task Manager (Full-Stack)
+# Team Task Manager
 
-A full-stack web app for team project/task management with authentication, role-based access control, and dashboard tracking.
+Full-stack team task management app with JWT auth, role-based access control, project membership, task tracking, and dashboard metrics.
+
+## Live App
+- https://etharaai-production-9bfe.up.railway.app/
 
 ## Tech Stack
 - Backend: Node.js, Express
 - Database: SQLite
 - ORM: Prisma Client
-- Frontend: HTML, CSS, Vanilla JavaScript (served by Express)
+- Frontend: HTML, CSS, Vanilla JavaScript
 - Auth: JWT + bcrypt
 - Validation: Zod
 
 ## Features
-- Signup / Login with JWT auth
-- Role-based access (`ADMIN`, `MEMBER`)
-- Project management
-- Team member assignment to projects
-- Task creation, assignment, and status tracking (`TODO`, `IN_PROGRESS`, `DONE`)
-- Dashboard summary with overdue task reporting
+- User signup/login and separate admin signup/login flows
+- RBAC with `ADMIN` and `MEMBER` roles
+- Project creation and member management
+- Task creation, assignment, and status updates (`TODO`, `IN_PROGRESS`, `DONE`)
+- Dashboard summary with overdue tasks
 
-## RBAC Rules
+## RBAC
 - `ADMIN`
   - Create projects
   - Add/remove project members
   - View all projects/tasks
   - Update any task
 - `MEMBER`
-  - View projects where they are a member
-  - Create tasks in projects they belong to
+  - View projects they belong to
+  - Create tasks in their projects
   - Update tasks they created
   - Update status for tasks assigned to them
   - Cannot create projects
 
-## Setup
-1. Install dependencies
+## Local Setup
+1. Install dependencies:
 ```bash
 npm install
 ```
-2. Initialize database schema
+2. Configure required environment variables in your local runtime.
+3. Initialize DB schema and Prisma client:
 ```bash
-npm run db:init
+npm run setup
 ```
-3. Generate Prisma client
-```bash
-npm run prisma:generate
-```
-4. Start app
+4. Start app:
 ```bash
 npm run dev
 ```
 
-App runs at `http://localhost:4000`.
+App runs on `http://localhost:4000`.
+
+## Notes on Accounts
+- There are no default seeded users or credentials in this repository.
+- Create your first admin account from the app UI or by calling:
+  - `POST /api/auth/admin/signup`
+
+## Railway Deployment (SQLite + Volume)
+1. Deploy this GitHub repo to Railway.
+2. Add a Railway Volume and mount it at `/app/data`.
+3. Configure required service variables in Railway.
+4. Set commands:
+  - Build: `npm ci && npm run prisma:generate`
+  - Start: `npm run db:init && npm start`
+
+The server also initializes SQLite schema on startup for `file:` databases.
+
+## Health Check
+- `GET /health`
 
 ## API Endpoints
 ### Auth
 - `POST /api/auth/signup`
 - `POST /api/auth/login`
+- `POST /api/auth/admin/signup`
+- `POST /api/auth/admin/login`
 - `GET /api/auth/me`
 
 ### Projects
@@ -72,13 +91,3 @@ App runs at `http://localhost:4000`.
 
 ### Dashboard
 - `GET /api/dashboard`
-
-## Environment Variables
-Create/update `.env`:
-```env
-DATABASE_URL="file:C:/atheraai/prisma/dev.db"
-JWT_SECRET="super-secret-key-change-me"
-PORT=4000
-```
-
-Use an absolute `DATABASE_URL` path suitable for your machine.
