@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Task Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-shape shape-a"></div>
+    <div class="bg-shape shape-b"></div>
+    <main class="shell">
+      <section id="authSection" class="panel auth-panel">
+        <div class="auth-content">
+          <button id="showAdminEntryBtn" class="ghost auth-admin-trigger" type="button">Admin Login</button>
+          <h1>Team Task Manager</h1>
+          <p class="subtitle">Create projects, assign tasks, and track progress with Admin/Member roles.</p>
+
+          <div class="auth-card-stack">
+            <form id="signupForm" class="card auth-card">
+              <h2>Sign Up</h2>
+              <input name="name" type="text" placeholder="Full name" required />
+              <input name="email" type="email" placeholder="Email" required />
+              <input name="password" type="password" placeholder="Password (min 6)" minlength="6" required />
+              <button type="submit">Create Account</button>
+              <button id="showLoginBtn" class="ghost switch-btn" type="button">Account created already? Login instead</button>
+            </form>
+
+            <form id="loginForm" class="card auth-card hidden">
+              <h2>Login</h2>
+              <input name="email" type="email" placeholder="Email" required />
+              <input name="password" type="password" placeholder="Password" required />
+              <button type="submit">Login</button>
+              <button id="showSignupBtn" class="ghost switch-btn" type="button">Need an account? Create account</button>
+            </form>
+
+            <form id="adminLoginForm" class="card auth-card hidden">
+              <h2>Admin Login</h2>
+              <input name="email" type="email" placeholder="Admin email" required />
+              <input name="password" type="password" placeholder="Password" required />
+              <button type="submit">Login as Admin</button>
+              <button id="showAdminSignupBtn" class="ghost switch-btn" type="button">Create new admin account</button>
+              <button id="showUserAuthBtn" class="ghost switch-btn" type="button">Back to user login</button>
+            </form>
+
+            <form id="adminSignupForm" class="card auth-card hidden">
+              <h2>Create Admin Account</h2>
+              <input name="name" type="text" placeholder="Full name" required />
+              <input name="email" type="email" placeholder="Admin email" required />
+              <input name="password" type="password" placeholder="Password (min 6)" minlength="6" required />
+              <button type="submit">Create Admin Account</button>
+              <button id="showAdminLoginBtn" class="ghost switch-btn" type="button">Already admin? Login</button>
+              <button id="showUserAuthFromAdminBtn" class="ghost switch-btn" type="button">Back to user login</button>
+            </form>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="appSection" class="panel app-panel hidden">
+        <header class="topbar">
+          <div>
+            <h2>Workspace</h2>
+            <p id="currentUser" class="muted"></p>
+          </div>
+          <button id="logoutBtn" class="ghost">Logout</button>
+        </header>
+
+        <section class="dashboard card">
+          <h3>Dashboard</h3>
+          <div id="dashboardSummary" class="stats"></div>
+          <div>
+            <h4>Overdue Tasks</h4>
+            <ul id="overdueList" class="list"></ul>
+          </div>
+        </section>
+
+        <div class="layout">
+          <aside class="left-column">
+            <section class="card">
+              <div class="section-header">
+                <h3>Projects</h3>
+              </div>
+              <div id="projectList" class="project-list"></div>
+            </section>
+
+            <section id="projectCreateCard" class="card hidden">
+              <h3>Create Project (Admin)</h3>
+              <form id="projectForm">
+                <input name="name" type="text" placeholder="Project name" required />
+                <textarea name="description" rows="3" placeholder="Description"></textarea>
+                <button type="submit">Create Project</button>
+              </form>
+            </section>
+          </aside>
+
+          <section class="right-column">
+            <section class="card">
+              <h3 id="activeProjectTitle">Select a project</h3>
+              <p id="activeProjectMeta" class="muted"></p>
+              <div id="memberBlock" class="member-block hidden">
+                <h4>Team</h4>
+                <ul id="memberList" class="list"></ul>
+                <form id="addMemberForm" class="inline-form hidden">
+                  <input name="email" type="email" placeholder="Invite member by email" required />
+                  <button type="submit">Add</button>
+                </form>
+              </div>
+            </section>
+
+            <section class="card">
+              <h3>Create Task</h3>
+              <form id="taskForm">
+                <input name="title" type="text" placeholder="Task title" required />
+                <textarea name="description" rows="3" placeholder="Task description"></textarea>
+                <div class="row">
+                  <input name="dueDate" type="datetime-local" />
+                  <select name="assigneeId" id="assigneeSelect">
+                    <option value="">Unassigned</option>
+                  </select>
+                </div>
+                <button type="submit">Create Task</button>
+              </form>
+            </section>
+
+            <section class="card">
+              <div class="section-header">
+                <h3>Tasks</h3>
+                <button id="refreshTasks" class="ghost">Refresh</button>
+              </div>
+              <div id="taskList" class="task-list"></div>
+            </section>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast hidden"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
