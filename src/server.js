@@ -5,6 +5,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const prisma = require("./lib/prisma");
+const { initializeSqliteSchema } = require("./lib/sqlite-init");
 
 const authRoutes = require("./routes/auth.routes");
 const projectRoutes = require("./routes/projects.routes");
@@ -39,6 +40,7 @@ app.use(errorHandler);
 
 async function start() {
   try {
+    initializeSqliteSchema();
     await prisma.$connect();
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
